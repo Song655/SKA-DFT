@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 	printf(">>> AUT HPC Research Laboratory - Direct Fourier Transform <<<\n");
 	printf("==============================================================\n\n");
 
-    if(argv[1] == NULL || strcmp(argv[1],"cuda") != 0 || strcmp(argv[1],"cpu") != 0 ){
+    if(argv[1] == NULL || !((strcmp(argv[1],"cuda") == 0) || (strcmp(argv[1],"cpu") == 0))){
         printf(">>> Usage: \n ./dft cuda \n or: \n ./dft cpu \n");
         return EXIT_FAILURE;
     }
