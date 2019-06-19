@@ -120,8 +120,8 @@ typedef struct Config {
     double cell_size;
     double uv_scale;
     double frequency_hz;
-    int gpu_num_blocks;
-    int gpu_num_threads;
+    int gpu_num_threads_per_block;
+    int num_task_slices;
     bool enable_messages;
 } Config;
 
@@ -148,8 +148,8 @@ void load_sources(Config *config, Source **sources);
 
 void load_visibilities(Config *config, Visibility **visibilities, Complex **vis_intensity);
 
-void extract_visibilities_cpu(Config *config, Source *sources, Visibility *visibilities,
-                          Complex *vis_intensity, int num_visibilities);
+void extract_visibilities_cpu(Source *sources, Visibility *visibilities,
+                          Complex *vis_intensity,int num_source, int num_visibilities);
 
 void extract_visibilities_cuda(Config *config, Source *sources, Visibility *visibilities,
                               Complex *vis_intensity, int num_visibilities);
@@ -160,14 +160,9 @@ PRECISION random_in_range(PRECISION min, PRECISION max);
 
 PRECISION generate_sample_normal(void);
 
-__global__ void direct_fourier_transform(const PRECISION3 *visibility, PRECISION2 *vis_intensity,
-                                         const int vis_count, const PRECISION3 *sources, const int source_count);
+__global__ void direct_fourier_transform(const PRECISION3 *visibility, PRECISION2 *vis_intensity, const int vis_count, const PRECISION3 *sources, const int source_count);
 
-static void check_cuda_error_aux(const char *file, unsigned line, const char *statement, cudaError_t err);
-
-void unit_test_init_config(Config *config);
-
-double unit_test_generate_approximate_visibilities(void);
+int starpu_launch(Config *config, Source *sources, Visibility *visibilities,Complex *vis_intensity);
 
 #endif /* DIRECT_FOURIER_TRANSFORM_H_ */
 

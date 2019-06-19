@@ -2,25 +2,22 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
-#include <time.h>
 #include <float.h>
 
 #include "dft.h"
 
-
-
 // Performs the direct fourier transformation to obtain the complex brightness
 // of each visibility from each identified source. This is the meat of the algorithm.
-void extract_visibilities_cpu(Config *config, Source *sources, Visibility *visibilities,Complex *vis_intensity, int num_visibilities)
+void extract_visibilities_cpu(Source *sources, Visibility *visibilities,Complex *vis_intensity, int num_source, int num_visibilities)
 {
 	for(int vis_indx = 0; vis_indx < num_visibilities; ++vis_indx)
 	{
 		Visibility *vis = &visibilities[vis_indx];
 		Complex *source_sum = &vis_intensity[vis_indx];
-        *source_sum = (Complex) {.real = 0.0, .imaginary = 0.0};
+                *source_sum = (Complex) {.real = 0.0, .imaginary = 0.0};
 
-		// For all sources, obtain some portion of brightness
-		for(int src_indx = 0; src_indx < config->num_sources; ++src_indx)
+		//For all sources, obtain some portion of brightness
+		for(int src_indx = 0; src_indx < num_source; ++src_indx)
 		{
 			Source *src             = &sources[src_indx];
 			double image_correction = sqrt(1.0 - pow(src->l, 2.0) - pow(src->m, 2.0));
