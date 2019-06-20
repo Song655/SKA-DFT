@@ -75,7 +75,7 @@ void init_config(Config *config) {
     config->num_task_slices = 1024;
 
     // Enables/disables the printing of information during DFT
-    config->enable_messages = true;
+    config->enable_messages = false;
 
 }
 

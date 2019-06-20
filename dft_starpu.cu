@@ -44,12 +44,12 @@ int starpu_launch(Config *config, Source *sources, Visibility *visibilities,Comp
     struct starpu_perfmodel extract_perf_model;
     struct starpu_codelet cl;
     starpu_data_handle_t source_handle, vis_handle, intensity_handle;
-/*
+
     ret = starpu_memory_pin(sources, config->num_sources*sizeof(sources[0]));
     ret += starpu_memory_pin(visibilities, config->num_visibilities*sizeof(visibilities[0]));
     ret += starpu_memory_pin(vis_intensity,config->num_visibilities*sizeof(vis_intensity[0]));
     if (ret !=0 ) return 77;
-*/
+
     //define perfmodel
     starpu_perfmodel_init(&extract_perf_model);
     extract_perf_model.type = STARPU_HISTORY_BASED;
@@ -82,6 +82,7 @@ int starpu_launch(Config *config, Source *sources, Visibility *visibilities,Comp
     for (int i = 0; i < horiz.nchildren; i++)
     {
         struct starpu_task *task = starpu_task_create();
+        task->synchronous = 0;
         task->cl = &cl;
 
         task->handles[0] = source_handle;
@@ -103,16 +104,15 @@ int starpu_launch(Config *config, Source *sources, Visibility *visibilities,Comp
     starpu_data_unpartition(vis_handle, STARPU_MAIN_RAM);
     starpu_data_unpartition(intensity_handle, STARPU_MAIN_RAM);
 
-    starpu_data_unregister(source_handle);
-    starpu_data_unregister(vis_handle);
-    starpu_data_unregister(intensity_handle);
-
-/*
     ret = starpu_memory_unpin(sources, config->num_sources*sizeof(sources[0]));
     ret += starpu_memory_unpin(visibilities, config->num_visibilities*sizeof(visibilities[0]));
     ret += starpu_memory_unpin(vis_intensity,config->num_visibilities*sizeof(vis_intensity[0]));
     if (ret !=0 ) return 77;
-*/
+
+    starpu_data_unregister(source_handle);
+    starpu_data_unregister(vis_handle);
+    starpu_data_unregister(intensity_handle);
+
     starpu_shutdown();
 }
 
