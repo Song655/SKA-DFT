@@ -22,7 +22,7 @@ void extract_visibilities_cpu(Source *sources, Visibility *visibilities,Complex 
 			Source *src             = &sources[src_indx];
 			double image_correction = sqrt(1.0 - pow(src->l, 2.0) - pow(src->m, 2.0));
 			double theta            = vis->u * src->l + vis->v * src->m + vis->w * (image_correction - 1.0);
-			
+
 			Complex theta_complex = (Complex) {
 				.real =  cos(2.0 * M_PI * theta),
 				.imaginary = -sin(2.0 * M_PI * theta)

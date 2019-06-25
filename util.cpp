@@ -12,16 +12,16 @@ void init_config(Config *config) {
 
     // Number of visibilities per source to synthesize
     // if no file provided.
-    config->num_visibilities = 4096*4096;
+    config->num_visibilities = 4096;
 
     // Disregard visibility w coordinate during transformation
     config->force_zero_w_term = false;
 
     // Use fixed sources (not from file)  true:random generage
-    config->synthetic_sources = true;
+    config->synthetic_sources = false;
 
     // Use fixed visibilities (not from file)
-    config->synthetic_visibilities = true;
+    config->synthetic_visibilities = false;
 
     // if using synthetic visibility creation, set this flag to
     // Gaussian distribute random visibility positions
@@ -32,14 +32,14 @@ void init_config(Config *config) {
     // subsequent rows = each unique source in the form:
     // l, m, intensity
     // note: data can be either single or double precision
-    config->source_file = "../data/example_sources.txt";
+    config->source_file = "../data/Sources_16384_wt1_4000mc.csv";
 
     // Cache File for Visibilities
     // File format : first row = number of visibilities in file
     // subsequent rows = each unique visibility in the form:
     // u, v, w, brightness (real), brightness (imag), intensity
     // note: data can be either single or double precision
-    config->vis_src_file = "../data/example_visibilities.txt";
+    config->vis_src_file = "../data/32_million_vis.csv";
 
     // Destination for processed visibilities
     config->vis_dest_file = "../data/vis_output_test.csv";
