@@ -90,12 +90,15 @@ int main(int argc, char **argv) {
 
     if (strcmp(argv[1], "cuda") == 0) {
         printf(">>> ======CUDA Version===== \n\n");
+        config.vis_dest_file = "../data/vis_output_test_cuda.csv";
         extract_visibilities_cuda(&config, sources, visibilities, vis_intensity, config.num_visibilities);
     } else if (strcmp(argv[1], "cpu") == 0) {
         printf(">>> ======CPU Version===== \n\n");
+        config.vis_dest_file = "../data/vis_output_test_cpu.csv";
         extract_visibilities_cpu(sources, visibilities, vis_intensity,config.num_sources, config.num_visibilities);
     } else if (strcmp(argv[1], "starpu") == 0){
         printf(">>> ======STARPU Version===== \n\n");
+        config.vis_dest_file = "../data/vis_output_test_starpu.csv";
         starpu_launch(&config, sources, visibilities, vis_intensity);
     }
     gettimeofday(&timeEnd,0);
