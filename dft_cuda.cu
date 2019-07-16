@@ -59,25 +59,25 @@ __global__ void direct_fourier_transform(const __restrict__ PRECISION3 *visibili
 	PRECISION3 src;
 	PRECISION2 theta_complex = MAKE_PRECISION2(0.0, 0.0);
 
-	const double two_PI = CUDART_PI + CUDART_PI;
+	//const PRECISION two_PI = CUDART_PI + CUDART_PI;
 	// For all sources
 	for(int src_indx = 0; src_indx < source_count; ++src_indx)
 	{	
 		src = sources[src_indx];
 		
 		// formula sqrt
-		// term = sqrt(1.0 - (src.x * src.x) - (src.y * src.y));
-		// image_correction = term;
-		// w_correction = term - 1.0; 
+		 term = sqrt(1.0 - (src.x * src.x) - (src.y * src.y));
+		 image_correction = term;
+		 w_correction = term - 1.0; 
 
 		// approximation formula (unit test fails as less accurate)
-		term = 0.5 * ((src.x * src.x) + (src.y * src.y));
-		w_correction = -term;
-		image_correction = 1.0 - term;
+		//term = 0.5 * ((src.x * src.x) + (src.y * src.y));
+		//w_correction = -term;
+		//image_correction = 1.0 - term;
 
 		src_correction = src.z / image_correction;
 
-		theta = (vis.x * src.x + vis.y * src.y + vis.z * w_correction) * two_PI;
+		theta = (vis.x * src.x + vis.y * src.y + vis.z * w_correction) * D_M_PI;
 		sincos(theta, &(theta_complex.y), &(theta_complex.x));
 		source_sum.x += theta_complex.x * src_correction;
 		source_sum.y += -theta_complex.y * src_correction;

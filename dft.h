@@ -43,6 +43,15 @@ extern "C" {
 #define M_PI 3.14159265358979323846
 #endif
 
+// 2*Pi (double precision)
+#ifndef D_M_PI
+#if SINGLE_PRECISION
+#define D_M_PI 6.283185307f
+#else
+#define D_M_PI 6.2831853071795865e+0
+#endif
+#endif
+
 // Speed of light
 #ifndef C
 #define C 299792458.0
